@@ -11,3 +11,7 @@ __pycache__/
 *backup*.py
 *.save
 *.py.save
+ai/ai:__init__.py
+ai/analyzer_v1.py
+app_niet-werkend_2026-08-21.py
+app_werkend_2026-08-21.py
