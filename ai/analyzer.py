@@ -40,6 +40,7 @@ __all__ = [
     "assign_curriculum_goals",
     "generate_student_goals",
     "generate_spaced_retrieval",
+    "chat_about_lesson",
     "get_models",
     "get_default_model",
     "analyseer_lesvoorbereiding",
@@ -1336,5 +1337,51 @@ Lesvoorbereiding:
         custom_options=custom_opts
     )
 
+# ============================================================
+# NIEUWE FUNCTIE: CHAT OVER SPECIFIEKE LES
+# ============================================================
+
+def chat_about_lesson(
+    lesson_text: str,
+    analysis_text: str,
+    chat_history: list,
+    new_message: str,
+    provider: str = "Lokaal (Ollama)",
+    model_name: str = None
+) -> str:
+    """
+    Laat de gebruiker chatten met de AI over een specifieke les en de bijbehorende analyse.
+    """
+    system_instruction = (
+        "Je bent een behulpzame didactische coach. Je helpt een leerkracht bij het verbeteren "
+        "van een lesvoorbereiding op basis van de 12 bouwstenen van Wijze Lessen.\n"
+        "Geef korte, zeer praktische en bemoedigende antwoorden. Geef concrete voorbeelden voor in de klas."
+    )
+
+    history_text = ""
+    for msg in chat_history[-5:]: # Neem enkel de laatste 5 berichten mee
+        role = "Docent" if msg["role"] == "user" else "AI Coach"
+        history_text += f"{role}: {msg['content']}\n"
+
+    prompt = (
+        "HIER IS DE LESVOORBEREIDING VAN DE LEERKRACHT:\n"
+        f"{lesson_text}\n\n"
+        "HIER IS JOUW EERDERE DIDACTISCHE ANALYSE (JSON):\n"
+        f"{analysis_text}\n\n"
+        "Eerdere berichten in dit gesprek:\n"
+        f"{history_text}\n"
+        f"Docent vraagt nu: {new_message}\n"
+        "Jouw antwoord:"
+    )
+
+    try:
+        return _ask_llm_text(
+            prompt=prompt,
+            provider=provider,
+            model_name=model_name,
+            system_instruction=system_instruction
+        )
+    except Exception as e:
+        return f"Er is een fout opgetreden tijdens de chat: {str(e)}"
 
 analyseer_lesvoorbereiding = analyze_lesson

@@ -19,7 +19,8 @@ try:
         generate_spaced_retrieval,
         get_models,
         get_default_model,
-        google_available
+        google_available,
+        chat_about_lesson
     )
 except ImportError:
     from ai.analyzer import (
@@ -36,6 +37,10 @@ except ImportError:
 
     def generate_spaced_retrieval(lesson_text: str, provider: str = "Google Gemini", model_name: str = "gemini-3.6-flash") -> list:
         return []
+
+    # Mock voor chatfunctie indien niet gevonden in ai/analyzer.py
+    def chat_about_lesson(lesson_text: str, analysis_text: str, chat_history: list, new_message: str, provider: str, model_name: str) -> str:
+        return "⚠️ De chatfunctie is nog niet toegevoegd aan `ai/analyzer.py`. Voeg de `chat_about_lesson` functie toe om antwoorden te krijgen."
 
     # Extra fallbacks indien niet beschikbaar in backend
     def get_default_model(provider: str = "Lokaal (Ollama)") -> str:
@@ -982,7 +987,7 @@ def get_ai_analysis(lesson):
     except (json.JSONDecodeError, TypeError): return None
 
 # ============================================================
-# CSS & WEERGAVE
+# CSS & WEERGAVE (INCLUSIEF OVERLAY DRAWER)
 # ============================================================
 
 def apply_custom_css():
@@ -1020,19 +1025,12 @@ def apply_custom_css():
             transform: translateY(-1px) !important;
         }
 
-        /* Zorg dat text areas automatisch meegroeien met inhoud */
-        .stTextArea textarea {
-            field-sizing: content;
-        }
-
         .stTextArea textarea[aria-label="Ruwe lesvoorbereiding / Brontekst"] { min-height: 200px !important; }
         .stTextArea textarea[aria-label="Algemene lesdoelen"], 
         .stTextArea textarea[aria-label="Algemene leerdoelen"] { min-height: 100px !important; }
         .stTextArea textarea[aria-label="Algemene opmerkingen"] { min-height: 80px !important; }
         .stTextArea textarea[aria-label="Lesdoelen"], 
         .stTextArea textarea[aria-label="Leerinhouden"] { min-height: 120px !important; }
-        
-        /* Lesverloop (Organisatie) start dubbel zo groot bij leeg veld */
         .stTextArea textarea[aria-label="Organisatie"] { min-height: 240px !important; }
 
         details.clean-card {
@@ -1148,17 +1146,6 @@ def apply_custom_css():
             font-weight: 500 !important;
         }
 
-        .clean-card-badge {
-            display: inline-block !important;
-            font-size: 0.72rem !important;
-            padding: 2px 7px !important;
-            border-radius: 4px !important;
-            background: rgba(59, 130, 246, 0.2) !important;
-            color: #93c5fd !important;
-            border: 1px solid rgba(59, 130, 246, 0.4) !important;
-            margin-bottom: 8px !important;
-        }
-
         .clean-card-section-label {
             font-weight: 600 !important;
             color: #f1f5f9 !important;
@@ -1190,6 +1177,49 @@ def apply_custom_css():
         .clean-card-adviezen-list li {
             margin-bottom: 6px !important;
         }
+
+        /* ============================================================ */
+        /* AI-COACH OVERLAY SLIDE-IN DRAWER */
+        /* ============================================================ */
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(.ai-coach-drawer-marker) {
+            position: fixed !important;
+            top: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            width: 490px !important;
+            max-width: 92vw !important;
+            height: 100vh !important;
+            max-height: 100vh !important;
+            background-color: #0b1329 !important;
+            border-left: 1px solid rgba(59, 130, 246, 0.4) !important;
+            border-top: none !important;
+            border-right: none !important;
+            border-bottom: none !important;
+            border-radius: 0 !important;
+            box-shadow: -10px 0 40px rgba(0, 0, 0, 0.85) !important;
+            z-index: 999999 !important;
+            padding: 22px 20px !important;
+            overflow-y: auto !important;
+            animation: drawerSlideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        }
+
+        @keyframes drawerSlideIn {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+
+        div[data-testid="stVerticalBlockBorderWrapper"]:has(.ai-coach-drawer-marker)::before {
+            content: "" !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            background: rgba(0, 0, 0, 0.55) !important;
+            backdrop-filter: blur(2px) !important;
+            z-index: -1 !important;
+            pointer-events: auto !important;
+        }
         
         .tracker-card { border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; border: 1px solid rgba(255, 255, 255, 0.08); transition: all 0.2s ease; }
         .tracker-card-covered { background-color: rgba(16, 185, 129, 0.08); border-left: 5px solid #10b981; }
@@ -1209,8 +1239,31 @@ def show_ai_analysis(analysis, lesson_obj=None, version_str="Actuele versie"):
     analyzed_time = analysis.get("analyzed_at", "Niet geregistreerd")
     st.caption(f"🕒 **Geanalyseerd op:** {analyzed_time}  |  🏷️ **{version_str}**")
 
-    if lesson_obj:
-        if PDF_AVAILABLE:
+    total_score = analysis.get("total_score")
+    
+    # Knoppen en score naast elkaar geplaatst
+    col_score, col_btn_chat, col_btn_pdf = st.columns([1.5, 2.5, 2])
+    
+    with col_score:
+        if total_score is not None: 
+            st.metric("Totale score", f"{total_score} / 60")
+            
+    with col_btn_chat:
+        st.write("") 
+        st.write("") 
+        lesson_id = lesson_obj.get("id", "temp") if lesson_obj else "temp"
+        chat_key_toggle = f"show_chat_{lesson_id}"
+        is_open = st.session_state.get(chat_key_toggle, False)
+        
+        btn_text = "❌ Sluit AI-Coach" if is_open else "💬 Vraag het de AI-Coach"
+        if st.button(btn_text, type="primary" if not is_open else "secondary", use_container_width=True):
+            st.session_state[chat_key_toggle] = not is_open
+            st.rerun()
+
+    with col_btn_pdf:
+        st.write("") 
+        st.write("") 
+        if lesson_obj and PDF_AVAILABLE:
             pdf_buf = export_analysis_to_pdf(lesson_obj, analysis, version_str=version_str)
             if pdf_buf:
                 clean_title = "".join(c for c in (lesson_obj.get('title') or "les") if c.isalnum() or c in (' ', '_', '-')).strip().replace(' ', '_')
@@ -1219,16 +1272,12 @@ def show_ai_analysis(analysis, lesson_obj=None, version_str="Actuele versie"):
                     data=pdf_buf,
                     file_name=f"AI_Analyse_{clean_title}_{lesson_obj.get('date') or 'export'}.pdf",
                     mime="application/pdf",
-                    key=f"dl_pdf_analysis_{lesson_obj.get('id', 'temp')}_{analysis.get('analyzed_at', '')}",
-                    type="secondary",
-                    help="Exporteer deze didactische evaluatie als PDF-document"
+                    key=f"dl_pdf_analysis_{lesson_id}_{analysis.get('analyzed_at', '')}",
+                    use_container_width=True
                 )
-        else:
-            st.caption("ℹ️ *Installeer `reportlab` om PDF-exports in te schakelen: `pip install reportlab`*")
-
-    total_score = analysis.get("total_score")
-    if total_score is not None: 
-        st.metric("Totale score", f"{total_score} / 60")
+        elif lesson_obj and not PDF_AVAILABLE:
+            st.caption("ℹ️ *Installeer `reportlab` voor PDF exports.*")
+            
     if analysis.get("summary"): 
         st.info(analysis["summary"])
 
@@ -1247,27 +1296,121 @@ def show_ai_analysis(analysis, lesson_obj=None, version_str="Actuele versie"):
                 sug3 = item.get("suggestion_3") or item.get("suggestie_3") or item.get("advies_3")
                 first_sug = sug1 or sug2 or sug3 or "Geen specifiek verbeteradvies."
                 evidence = item.get("evidence") or item.get("bewijs") or "Geen specifiek bewijs gevonden in het lesplan."
-                status = item.get("status", "")
 
-                card_html = f"""
-                <details class="clean-card">
-                    <summary>
-                        <div class="clean-card-header">
-                            <span class="clean-card-title">{p_obj['emoji']} B{p_obj['number']}. {p_obj['short']}</span>
-                            <span class="clean-card-toggle">▼</span>
-                        </div>
-                        <div class="clean-card-stars">{stars} <span class="clean-card-score">({score_num}/5)</span></div>
-                        <div class="clean-card-suggestion">💡 {html.escape(str(first_sug))}</div>
-                    </summary>
-                    <div class="clean-card-body">
-                        <div class="clean-card-fullname">{html.escape(p_obj['name'])}</div>
-                        <div class="clean-card-section-label">🔍 Bewijs uit de les:</div>
-                        <div class="clean-card-evidence">{html.escape(str(evidence))}</div>
-                    </div>
-                </details>
-                """
+                suggestions = [s for s in [sug1, sug2, sug3] if s][:2]
+                if suggestions:
+                    adviezen_items = "".join(f"<li>{html.escape(str(s))}</li>" for s in suggestions)
+                    adviezen_html = f'<div class="clean-card-section-label">💡 Verbeteradviezen:</div><ul class="clean-card-adviezen-list">{adviezen_items}</ul>'
+                else:
+                    adviezen_html = ""
+
+                card_html = f"""<details class="clean-card">
+<summary>
+<div class="clean-card-header">
+<span class="clean-card-title">{p_obj['emoji']} B{p_obj['number']}. {p_obj['short']}</span>
+<span class="clean-card-toggle">▼</span>
+</div>
+<div class="clean-card-stars">{stars} <span class="clean-card-score">({score_num}/5)</span></div>
+<div class="clean-card-suggestion">💡 {html.escape(str(first_sug))}</div>
+</summary>
+<div class="clean-card-body">
+<div class="clean-card-fullname">{html.escape(p_obj['name'])}</div>
+<div class="clean-card-section-label">🔍 Bewijs uit de les:</div>
+<div class="clean-card-evidence">{html.escape(str(evidence))}</div>
+{adviezen_html}
+</div>
+</details>"""
                 with col:
                     st.markdown(card_html, unsafe_allow_html=True)
+
+def show_lesson_chatbot(lesson, phases, analysis):
+    # Overlay Drawer Container
+    with st.container(border=True):
+        st.markdown('<div class="ai-coach-drawer-marker"></div>', unsafe_allow_html=True)
+        
+        # Bovenbalk met titel en kruisje om te sluiten
+        head_col, close_col = st.columns([5, 1])
+        with head_col:
+            st.markdown("### 💬 AI-Coach")
+            st.caption("Stel vragen over je werkpunten of vraag voorbeelden voor in de klas.")
+        with close_col:
+            if st.button("✕", key=f"close_drawer_{lesson['id']}", help="Sluit paneel", type="secondary"):
+                st.session_state[f"show_chat_{lesson['id']}"] = False
+                st.rerun()
+
+        chat_key = f"chat_history_{lesson['id']}"
+        if chat_key not in st.session_state:
+            st.session_state[chat_key] = []
+
+        lowest_principles = []
+        for p in analysis.get("principles", []):
+            try:
+                score = int(p.get("score", 5))
+                lowest_principles.append((score, p))
+            except:
+                pass
+        lowest_principles.sort(key=lambda x: x[0])
+        
+        prompt_to_process = None
+
+        # Toon suggestie-knoppen als er nog geen chatgeschiedenis is
+        if not st.session_state[chat_key] and lowest_principles:
+            st.markdown("**💡 Suggesties voor jou:**")
+            for idx, (score, p) in enumerate(lowest_principles[:3]):
+                p_info = get_principle(p)
+                q_text = f"Hoe verbeter ik B{p_info['number']} ({p_info['short']}) concreet in deze les?"
+                if st.button(q_text, key=f"sug_{lesson['id']}_{idx}", use_container_width=True):
+                    prompt_to_process = q_text
+
+        # Scrollbare container voor chatberichten
+        chat_container = st.container(height=380, border=True)
+        with chat_container:
+            if not st.session_state[chat_key]:
+                st.caption("👋 Nog geen vragen gesteld. Kies een suggestie hierboven of typ hieronder.")
+            for msg in st.session_state[chat_key]:
+                with st.chat_message(msg["role"]):
+                    st.markdown(msg["content"])
+
+        # 100% betrouwbare chat-invoerbalk
+        with st.form(key=f"drawer_form_{lesson['id']}", clear_on_submit=True):
+            f_col1, f_col2 = st.columns([4.2, 1.2])
+            with f_col1:
+                user_msg = st.text_input(
+                    "Typ je vraag",
+                    placeholder="Typ hier je vraag aan de coach...",
+                    label_visibility="collapsed",
+                    key=f"text_inp_{lesson['id']}"
+                )
+            with f_col2:
+                send_clicked = st.form_submit_button("Stuur ➔", use_container_width=True)
+
+        if send_clicked and user_msg.strip():
+            prompt_to_process = user_msg.strip()
+
+        # Verwerk de vraag en laat de AI antwoorden
+        if prompt_to_process:
+            st.session_state[chat_key].append({"role": "user", "content": prompt_to_process})
+            with chat_container:
+                with st.chat_message("user"):
+                    st.markdown(prompt_to_process)
+                with st.chat_message("assistant"):
+                    with st.spinner("AI-coach formuleert een antwoord..."):
+                        lesson_text = build_lesson_text(lesson, phases)
+                        analysis_text = json.dumps(analysis, ensure_ascii=False)
+                        try:
+                            response = chat_about_lesson(
+                                lesson_text=lesson_text,
+                                analysis_text=analysis_text,
+                                chat_history=st.session_state[chat_key][:-1],
+                                new_message=prompt_to_process,
+                                provider=st.session_state.ai_provider,
+                                model_name=st.session_state.gekozen_model
+                            )
+                            st.markdown(response)
+                            st.session_state[chat_key].append({"role": "assistant", "content": response})
+                        except Exception as e:
+                            st.error(f"Fout: {e}")
+            st.rerun()
 
 # ============================================================
 # FASE-EDITOR WIDGETS (MET INTELLIGENTE '+' KNOP PER FASE)
@@ -1334,8 +1477,6 @@ def render_new_lesson_structure():
             edited.append(result)
         st.divider()
 
-    # Intelligente toevoeging: voegt de nieuwe fase direct na de gekozen fase in
-    # Bewaakt automatisch dat LESAFSLUITING altijd het sluitstuk blijft
     if add_after_idx is not None:
         intro = next((p for p in edited if p.get("section") == "LESINTRO"), empty_phase("LESINTRO"))
         closing = next((p for p in edited if p.get("section") == "LESAFSLUITING"), empty_phase("LESAFSLUITING"))
@@ -1456,7 +1597,6 @@ st.set_page_config(page_title=APP_TITLE, page_icon="🧠", layout="wide")
 init_database()
 apply_custom_css()
 
-# Initialiseer basis state voor provider en model indien nog niet gezet
 if "ai_provider" not in st.session_state:
     st.session_state.ai_provider = "Google Gemini"
 
@@ -1470,9 +1610,7 @@ st.sidebar.title("🧠 Wijze Lessen")
 st.sidebar.markdown("---")
 st.sidebar.subheader("🤖 AI-Instellingen")
 
-# 1. Provider Selectie
 provider_options = ["Google Gemini", "Lokaal (Ollama)"]
-# Valideer en update sessie als er een onverwachte waarde instaat
 if st.session_state.ai_provider not in provider_options:
     st.session_state.ai_provider = "Google Gemini"
 
@@ -1484,7 +1622,6 @@ selected_provider = st.sidebar.radio(
     key="provider_radio_widget"
 )
 
-# Detecteer wijziging en zet standaardwaarden terug
 if selected_provider != st.session_state.ai_provider:
     st.session_state.ai_provider = selected_provider
     try:
@@ -1493,18 +1630,16 @@ if selected_provider != st.session_state.ai_provider:
         st.session_state.gekozen_model = "gemini-3.6-flash" if "Google" in selected_provider else "qwen2.5:7b"
     st.rerun()
 
-# 2. Check Gemini beschikbaarheid en toon waarschuwing (geen crash!)
 try:
     if st.session_state.ai_provider == "Google Gemini" and not google_available():
         st.sidebar.warning("⚠️ Google Gemini is niet beschikbaar. Controleer GEMINI_API_KEY in .streamlit/secrets.toml.")
 except Exception:
     pass
 
-# 3. Model Selectie
 try:
     beschikbare_modellen = get_models(st.session_state.ai_provider)
 except TypeError:
-    beschikbare_modellen = get_models() # Fallback voor als provider param niet bestaat
+    beschikbare_modellen = get_models()
 
 if not beschikbare_modellen: 
     try:
@@ -1560,7 +1695,7 @@ if page == "🏠 Dashboard":
     else: st.info("Je hebt nog geen lessen opgeslagen.")
 
 # ============================================================
-# PAGINA: 📝 NIEUWE LES (MET BESTANDSUPLOAD & 2-STAPS AI)
+# PAGINA: 📝 NIEUWE LES
 # ============================================================
 elif page == "📝 Nieuwe les":
     initialize_new_lesson_state()
@@ -1679,7 +1814,7 @@ elif page == "📝 Nieuwe les":
             reset_new_lesson()
 
 # ============================================================
-# PAGINA: 📚 MIJN LESSEN (MASTER-DETAIL MET INSCHUIVEND DETAILVENSTER)
+# PAGINA: 📚 MIJN LESSEN (MASTER-DETAIL)
 # ============================================================
 elif page == "📚 Mijn lessen":
     lessons = get_lessons()
@@ -1978,7 +2113,7 @@ elif page == "📚 Mijn lessen":
                         
                         ppt_progress.progress(100, text="✅ PowerPoint-presentatie succesvol aangemaakt!")
                     except Exception as e:
-                        ppt_progress.empty() # Verwijder progress bar bij fout
+                        ppt_progress.empty()
                         st.error(f"Fout bij genereren PowerPoint: {e}")
             with ppt_col2:
                 if f"pptx_buf_{lesson['id']}" in st.session_state and st.session_state[f"pptx_buf_{lesson['id']}"]:
@@ -2047,8 +2182,13 @@ elif page == "📚 Mijn lessen":
                         st.error("Er ging iets mis bij de AI-analyse.")
                         st.exception(error)
 
-            if active_analysis: 
+            # Didactische analyse & inschuifpaneel als overlay
+            if active_analysis:
                 show_ai_analysis(active_analysis, lesson_obj=active_lesson, version_str=current_version_str)
+                
+                # Toon overlay drawer als chat geactiveerd is
+                if st.session_state.get(f"show_chat_{active_lesson.get('id', 'temp')}", False):
+                    show_lesson_chatbot(active_lesson, active_phases_db, active_analysis)
 
         else:
             st.subheader("✏️ Les bewerken")

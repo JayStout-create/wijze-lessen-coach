@@ -1,0 +1,8 @@
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
+/bin/bash: /Users/jay/Desktop/wijze-lessen-coach/auto_backup.sh: Operation not permitted
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
+/bin/bash: /Users/jay/Desktop/wijze-lessen-coach/auto_backup.sh: Operation not permitted
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
+/bin/bash: /Users/jay/Desktop/wijze-lessen-coach/auto_backup.sh: Operation not permitted
+shell-init: error retrieving current directory: getcwd: cannot access parent directories: Operation not permitted
+/bin/bash: /Users/jay/Desktop/wijze-lessen-coach/auto_backup.sh: Operation not permitted
