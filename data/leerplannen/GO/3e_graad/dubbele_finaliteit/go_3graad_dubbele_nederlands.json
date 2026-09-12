@@ -1,0 +1,341 @@
+{
+  "metadata": {
+    "net": "GO!",
+    "graad": "3",
+    "finaliteit": "Dubbele finaliteit",
+    "vak": "Nederlands",
+    "bron": "GO! Leerplan Basisvorming: Derde graad dubbele finaliteit - Sleutelcompetenties 2, 4, 5, 13 en 15"
+  },
+  "doelen": [
+    {
+      "code": "BV3_02.01",
+      "type": "vakgerelateerd",
+      "cluster": "Strategieën en woordenschat",
+      "omschrijving": "De leerlingen zetten doelgericht strategieën in ter ondersteuning van informatieverwerking en communicatieve handelingen."
+    },
+    {
+      "code": "BV3_02.02",
+      "type": "vakgerelateerd",
+      "cluster": "Strategieën en woordenschat",
+      "omschrijving": "De leerlingen zetten eerder en nieuwverworven woordenschat in ter ondersteuning van hun communicatieve handelingen."
+    },
+    {
+      "code": "BV3_02.03",
+      "type": "vakgerelateerd",
+      "cluster": "Strategieën en woordenschat",
+      "omschrijving": "De leerlingen lichten binnen een context de betekenis van (hoog)frequente academische woordenschat toe."
+    },
+    {
+      "code": "BV3_02.04",
+      "type": "vakgerelateerd",
+      "cluster": "Lezen en Luisteren (Receptie)",
+      "omschrijving": "De leerlingen bepalen het onderwerp, de hoofdgedachte en de hoofdpunten bij het doelgericht lezen en beluisteren van teksten."
+    },
+    {
+      "code": "BV3_02.04.01",
+      "type": "vakgerelateerd",
+      "cluster": "Lezen en Luisteren (Receptie)",
+      "omschrijving": "De leerlingen bepalen het onderwerp, de hoofdgedachte en de hoofdpunten bij het doelgericht beluisteren van teksten."
+    },
+    {
+      "code": "BV3_02.04.02",
+      "type": "vakgerelateerd",
+      "cluster": "Lezen en Luisteren (Receptie)",
+      "omschrijving": "De leerlingen bepalen het onderwerp, de hoofdgedachte en de hoofdpunten bij het doelgericht lezen van teksten."
+    },
+    {
+      "code": "BV3_02.05",
+      "type": "vakgerelateerd",
+      "cluster": "Lezen en Luisteren (Receptie)",
+      "omschrijving": "De leerlingen beoordelen doelgericht informatie op betrouwbaarheid, correctheid en bruikbaarheid bij het lezen en luisteren."
+    },
+    {
+      "code": "BV3_02.05.01",
+      "type": "vakgerelateerd",
+      "cluster": "Lezen en Luisteren (Receptie)",
+      "omschrijving": "De leerlingen beoordelen doelgericht informatie op betrouwbaarheid, correctheid en bruikbaarheid bij het lezen."
+    },
+    {
+      "code": "BV3_02.05.02",
+      "type": "vakgerelateerd",
+      "cluster": "Lezen en Luisteren (Receptie)",
+      "omschrijving": "De leerlingen beoordelen doelgericht informatie op betrouwbaarheid, correctheid en bruikbaarheid bij het luisteren."
+    },
+    {
+      "code": "BV3_02.06",
+      "type": "vakgerelateerd",
+      "cluster": "Lezen en Luisteren (Receptie)",
+      "omschrijving": "De leerlingen selecteren relevante informatie bij het lezen en beluisteren van teksten."
+    },
+    {
+      "code": "BV3_02.06.01",
+      "type": "vakgerelateerd",
+      "cluster": "Lezen en Luisteren (Receptie)",
+      "omschrijving": "De leerlingen selecteren relevante informatie bij het beluisteren van teksten."
+    },
+    {
+      "code": "BV3_02.06.02",
+      "type": "vakgerelateerd",
+      "cluster": "Lezen en Luisteren (Receptie)",
+      "omschrijving": "De leerlingen selecteren relevante informatie bij het lezen van teksten."
+    },
+    {
+      "code": "BV3_02.07",
+      "type": "vakgerelateerd",
+      "cluster": "Spreken en Schrijven (Productie)",
+      "omschrijving": "De leerlingen nemen notities bij het lezen en beluisteren van teksten."
+    },
+    {
+      "code": "BV3_02.07.01",
+      "type": "vakgerelateerd",
+      "cluster": "Spreken en Schrijven (Productie)",
+      "omschrijving": "De leerlingen nemen notities bij het beluisteren van teksten."
+    },
+    {
+      "code": "BV3_02.07.02",
+      "type": "vakgerelateerd",
+      "cluster": "Spreken en Schrijven (Productie)",
+      "omschrijving": "De leerlingen nemen notities bij het lezen van teksten."
+    },
+    {
+      "code": "BV3_02.08",
+      "type": "vakgerelateerd",
+      "cluster": "Spreken en Schrijven (Productie)",
+      "omschrijving": "De leerlingen vatten doelgericht een geschreven tekst schriftelijk samen."
+    },
+    {
+      "code": "BV3_02.09",
+      "type": "vakgerelateerd",
+      "cluster": "Spreken en Schrijven (Productie)",
+      "omschrijving": "De leerlingen spreken en schrijven doelgericht."
+    },
+    {
+      "code": "BV3_02.09.01",
+      "type": "vakgerelateerd",
+      "cluster": "Spreken en Schrijven (Productie)",
+      "omschrijving": "De leerlingen spreken doelgericht."
+    },
+    {
+      "code": "BV3_02.09.02",
+      "type": "vakgerelateerd",
+      "cluster": "Spreken en Schrijven (Productie)",
+      "omschrijving": "De leerlingen schrijven doelgericht."
+    },
+    {
+      "code": "BV3_02.10",
+      "type": "vakgerelateerd",
+      "cluster": "Spreken en Schrijven (Productie)",
+      "omschrijving": "De leerlingen drukken zich creatief uit met taal."
+    },
+    {
+      "code": "BV3_02.11",
+      "type": "vakgerelateerd",
+      "cluster": "Interactie en Debatteren",
+      "omschrijving": "De leerlingen nemen doelgericht deel aan mondelinge en schriftelijke interactie."
+    },
+    {
+      "code": "BV3_02.11.01",
+      "type": "vakgerelateerd",
+      "cluster": "Interactie en Debatteren",
+      "omschrijving": "De leerlingen nemen doelgericht deel aan mondelinge interactie."
+    },
+    {
+      "code": "BV3_02.11.02",
+      "type": "vakgerelateerd",
+      "cluster": "Interactie en Debatteren",
+      "omschrijving": "De leerlingen nemen doelgericht deel aan schriftelijke interactie."
+    },
+    {
+      "code": "BV3_02.12",
+      "type": "vakgerelateerd",
+      "cluster": "Interactie en Debatteren",
+      "omschrijving": "De leerlingen debatteren over maatschappelijke, sociale of ethische stellingen."
+    },
+    {
+      "code": "BV3_02.12.01",
+      "type": "vakgerelateerd",
+      "cluster": "Interactie en Debatteren",
+      "omschrijving": "De leerlingen formuleren zelf een relevante debatstelling."
+    },
+    {
+      "code": "BV3_02.12.02",
+      "type": "vakgerelateerd",
+      "cluster": "Interactie en Debatteren",
+      "omschrijving": "De leerlingen structureren hun ideeën tot een openingsbetoog."
+    },
+    {
+      "code": "BV3_02.12.03",
+      "type": "vakgerelateerd",
+      "cluster": "Interactie en Debatteren",
+      "omschrijving": "De leerlingen herkennen retorische elementen en passen ze toe."
+    },
+    {
+      "code": "BV3_02.12.04",
+      "type": "vakgerelateerd",
+      "cluster": "Interactie en Debatteren",
+      "omschrijving": "De leerlingen herkennen en reageren adequaat op incomplete en valse argumentatie."
+    },
+    {
+      "code": "BV3_02.13",
+      "type": "vakgerelateerd",
+      "cluster": "Taalsysteem en Taalgebruik",
+      "omschrijving": "De leerlingen passen inzicht in het taalsysteem toe ter ondersteuning van hun communicatieve handelingen."
+    },
+    {
+      "code": "BV3_02.14",
+      "type": "vakgerelateerd",
+      "cluster": "Taalsysteem en Taalgebruik",
+      "omschrijving": "De leerlingen passen inzicht in taalgebruik toe ter ondersteuning van hun communicatieve handelingen."
+    },
+    {
+      "code": "BV3_02.15",
+      "type": "vakgerelateerd",
+      "cluster": "Taalsysteem en Taalgebruik",
+      "omschrijving": "De leerlingen illustreren het effect van taaluitingen, taalvariëteiten en talen op identiteitsvorming en sociale omgang."
+    },
+    {
+      "code": "BV3_02.16",
+      "type": "vakgerelateerd",
+      "cluster": "Literatuur",
+      "omschrijving": "De leerlingen verwoorden de eigen beleving en interpretatie van literaire teksten."
+    },
+    {
+      "code": "BV3_02.17",
+      "type": "vakgerelateerd",
+      "cluster": "Literatuur",
+      "omschrijving": "De leerlingen beoordelen literaire teksten aan de hand van tekstelementen en persoonlijke voorkeuren."
+    },
+    {
+      "code": "BV3_02.18",
+      "type": "vakgerelateerd",
+      "cluster": "Literatuur",
+      "omschrijving": "De leerlingen gaan in interactie over de relevantie van literaire teksten voor hun leefwereld, voor de samenleving waarin ze leven en voor de samenleving waarin de teksten ontstonden."
+    },
+    {
+      "code": "BV3_02.18.01",
+      "type": "vakgerelateerd",
+      "cluster": "Literatuur",
+      "omschrijving": "De leerlingen herkennen en interpreteren verschillende perspectieven in teksten."
+    },
+    {
+      "code": "BV3_02.18.02",
+      "type": "vakgerelateerd",
+      "cluster": "Literatuur",
+      "omschrijving": "De leerlingen analyseren hoe literatuur denkkaders uit de samenleving ter discussie stelt."
+    },
+    {
+      "code": "BV3_13.01",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 13: Leercompetenties",
+      "omschrijving": "De leerlingen reflecteren cyclisch, vakspecifiek en vakoverschrijdend over het eigen leerproces en sturen het op basis daarvan doelgericht bij."
+    },
+    {
+      "code": "BV3_13.02",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 13: Leercompetenties",
+      "omschrijving": "De leerlingen zetten (meta)cognitieve leer- en regulatiestrategieën in om zich leerinhouden eigen te maken."
+    },
+    {
+      "code": "BV3_13.03",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 13: Leercompetenties",
+      "omschrijving": "De leerlingen gebruiken school- en vaktaal."
+    },
+    {
+      "code": "BV3_13.04",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 13: Leercompetenties",
+      "omschrijving": "De leerlingen zoeken doelgericht informatie in diverse bronnen en verwerken die op een kritische en systematische manier."
+    },
+    {
+      "code": "BV3_13.04.01",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 13: Leercompetenties",
+      "omschrijving": "De leerlingen bepalen zelfstandig een geschikte zoekstrategie."
+    },
+    {
+      "code": "BV3_13.04.02",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 13: Leercompetenties",
+      "omschrijving": "De leerlingen beoordelen op kritische wijze digitale en niet-digitale bronnen op bruikbaarheid op basis van aangereikte criteria."
+    },
+    {
+      "code": "BV3_13.04.03",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 13: Leercompetenties",
+      "omschrijving": "De leerlingen verwerken zelfstandig de informatie uit de bronnen in functie van een vooropgesteld doel."
+    },
+    {
+      "code": "BV3_04.01",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 4: Digitale competenties en mediawijsheid",
+      "omschrijving": "De leerlingen gebruiken doelgericht courante functionaliteiten van vergelijkbare toepassingen om digitale inhouden te creëren."
+    },
+    {
+      "code": "BV3_04.02",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 4: Digitale competenties en mediawijsheid",
+      "omschrijving": "De leerlingen respecteren ethische, sociale en legale regels bij het gebruiken van digitale technologie."
+    },
+    {
+      "code": "BV3_05.01",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 5: Sociaal-relationele competenties",
+      "omschrijving": "De leerlingen gaan respectvol en constructief met anderen in interactie rekening houdend met elkaars grenzen."
+    },
+    {
+      "code": "BV3_05.01.01",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 5: Sociaal-relationele competenties",
+      "omschrijving": "De leerlingen dragen in groepsactiviteiten actief bij aan de uitwerking van een gezamenlijk resultaat."
+    },
+    {
+      "code": "BV3_05.01.02",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 5: Sociaal-relationele competenties",
+      "omschrijving": "De leerlingen brengen grensoverschrijdend gedrag in verband met machtsmisbruik en pest- en uitsluitingsgedrag."
+    },
+    {
+      "code": "BV3_15.01",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 15: Initiatief, ambitie en loopbaancompetenties",
+      "omschrijving": "De leerlingen doorlopen bewust hun studie- of beroepskeuzeproces."
+    },
+    {
+      "code": "BV3_15.01.01",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 15: Initiatief, ambitie en loopbaancompetenties",
+      "omschrijving": "De leerlingen onderzoeken het studie- en loopbaanaanbod."
+    },
+    {
+      "code": "BV3_15.01.02",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 15: Initiatief, ambitie en loopbaancompetenties",
+      "omschrijving": "De leerlingen kiezen één of meerdere studie- en/of beroepskeuzes."
+    },
+    {
+      "code": "BV3_15.01.03",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 15: Initiatief, ambitie en loopbaancompetenties",
+      "omschrijving": "De leerlingen beargumenteren de gekozen studie- en/of beroepskeuzes."
+    },
+    {
+      "code": "BV3_15.02",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 15: Initiatief, ambitie en loopbaancompetenties",
+      "omschrijving": "De leerlingen genereren creatieve ideeën om een probleem op te lossen en bespreken de uitvoerbaarheid ervan aan de hand van criteria."
+    },
+    {
+      "code": "BV3_15.02.01",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 15: Initiatief, ambitie en loopbaancompetenties",
+      "omschrijving": "De leerlingen gebruiken verschillende technieken om ideeën te genereren."
+    },
+    {
+      "code": "BV3_15.02.02",
+      "type": "vakoverschrijdend",
+      "cluster": "Sleutelcompetentie 15: Initiatief, ambitie en loopbaancompetenties",
+      "omschrijving": "De leerlingen beoordelen de uitvoerbaarheid."
+    }
+  ]
+}
